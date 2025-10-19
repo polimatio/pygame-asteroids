@@ -58,7 +58,7 @@ def main():
                 # Check for collision between shot and asteroid
                 if asteroid.is_colliding(shot):
                     print("Shot hit an asteroid.")
-                    asteroid.kill() # remove asteroid
+                    asteroid.split() # split asteroid until destroyed
                     shot.kill() # remove shot
 
         #drawable.draw(screen) # draw all drawable sprites
