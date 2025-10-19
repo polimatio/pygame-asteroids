@@ -1,6 +1,6 @@
 import pygame
 from circleshape import CircleShape
-from constants import PLAYER_RADIUS, PLAYER_TURN_RATE, PLAYER_SPEED, SHOT_SPEED
+from constants import *
 from shot import Shot
 
 # Player class representing the player's ship
@@ -8,6 +8,7 @@ class Player(CircleShape):
     def __init__(self, x, y):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0 # degrees
+        self.shot_cooldown = 0 # shooting cooldown timer, in seconds
 
 
     # Calculate the triangle vertices for the player's ship
@@ -36,8 +37,12 @@ class Player(CircleShape):
 
     # Override update method of CircleShape
     def update(self, dt):
+        # Update shot cooldown timer
+        if self.shot_cooldown > 0:
+            self.shot_cooldown -= dt
+        
+        # Handle player input
         keys = pygame.key.get_pressed()
-
         if keys[pygame.K_a]:
             self.rotate(-dt)
         if keys[pygame.K_d]:
@@ -52,6 +57,12 @@ class Player(CircleShape):
 
     # The player's ship can shoot projectiles in the direction it is facing
     def shoot(self):
+        # Enforce shot cooldown
+        if self.shot_cooldown > 0:
+            return
+        # Create a new shot
         shot = Shot(self.position.x, self.position.y)
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
-        shot.velocity = forward * SHOT_SPEED
+        shot.velocity = forward * PLAYER_SHOT_SPEED
+        # Reset shot cooldown timer
+        self.shot_cooldown = PLAYER_SHOT_COOLDOWN
