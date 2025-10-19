@@ -27,3 +27,11 @@ class CircleShape(pygame.sprite.Sprite):
         self.rect.center = self.position
         # sub-classes must override
         pass
+
+    def is_colliding(self, other: "CircleShape") -> bool:
+        # Ensure the other object is a CircleShape at runtime
+        if not isinstance(other, CircleShape):
+            raise TypeError("is_colliding expects another CircleShape")
+        # Check for collision with another CircleShape
+        distance = self.position.distance_to(other.position)
+        return distance <= (self.radius + other.radius)

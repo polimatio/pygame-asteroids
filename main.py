@@ -3,6 +3,7 @@ from constants import *
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
+from sys import exit
 
 
 def main():
@@ -42,6 +43,13 @@ def main():
         # Render frame
         screen.fill("black") # clear screen each frame
         updatable.update(dt) # update all updatable sprites
+
+        # Collision detection: check for collisions between player and asteroids
+        for asteroid in asteroids:
+            if asteroid.is_colliding(player):
+                print("Player collided with an asteroid.")
+                exit("Game Over!")
+
         #drawable.draw(screen) # draw all drawable sprites
         # custom draw to handle non-rectangular shapes
         for sprite in drawable:
