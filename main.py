@@ -47,11 +47,19 @@ def main():
         screen.fill("black") # clear screen each frame
         updatable.update(dt) # update all updatable sprites
 
-        # Collision detection: check for collisions between player and asteroids
+        # Collision detection
         for asteroid in asteroids:
+            # Check for collision between player and asteroid
             if asteroid.is_colliding(player):
                 print("Player collided with an asteroid.")
-                exit("Game Over!")
+                exit("Game Over!") # player is destroyed, end game
+            
+            for shot in shots:
+                # Check for collision between shot and asteroid
+                if asteroid.is_colliding(shot):
+                    print("Shot hit an asteroid.")
+                    asteroid.kill() # remove asteroid
+                    shot.kill() # remove shot
 
         #drawable.draw(screen) # draw all drawable sprites
         # custom draw to handle non-rectangular shapes
